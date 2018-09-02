@@ -1,19 +1,20 @@
 /**
- * A singly linked list which allows duplicates
+ * A doubly linked list which allows duplicates
  *
  * @author Michael Thomson
  */
 
-public class LinkedList_Duplicates<K,V> {
+public class LinkedList_Duplicates_Double<K,V> {
     Node head;
 
     /**
-     * A member of a singly linked list containing a key, value pair
+     * A member of a doubly linked list containing a key, value pair
      */
     class Node {
         K key;
         V value;
         Node next;
+        Node prev;
         
         /**
          * constructor for a node
@@ -21,18 +22,20 @@ public class LinkedList_Duplicates<K,V> {
          * @param key key value
          * @param value value to be mapped to the key
          * @param next reference to next node in the list
+         * @param prev reference to previous node in the list
          */
-        public Node(K key, V value, Node next) {
+        public Node(K key, V value, Node next, Node prev) {
             this.key = key;
             this.value = value;
             this.next = next;
+            this.prev = prev;
         }
     }
 
     /**
      * constructor for a linked list
      */
-    public LinkedList_Duplicates() {
+    public LinkedList_Duplicates_Double() {
         head = null;
     }
 
@@ -49,6 +52,17 @@ public class LinkedList_Duplicates<K,V> {
     }
 
     /**
+     * returns the value associated to the given key
+     *
+     * @param key key to look up
+     * @return value associated to the key
+     */
+    public V get(K key) {
+        Node x = find(key);
+        return x.value;
+    }
+
+    /**
      * appends the given key, value pair to the start of the linked list
      *
      * @param key key value to be inserted
@@ -56,11 +70,11 @@ public class LinkedList_Duplicates<K,V> {
      */
     public void appendToStart(K key, V value) {
         if(head != null) {
-            Node newNode = new Node(key, value, head);
-            this.head = newNode;
+            Node newNode = new Node(key, value, head, null);
+            head = newNode;
         } else {
-            Node newNode = new Node(key, value, null);
-            this.head = newNode;
+            Node newNode = new Node(key, value, null, null);
+            head = newNode;
         }
     }
 
@@ -74,9 +88,9 @@ public class LinkedList_Duplicates<K,V> {
         Node x;
         if(head != null) {
             for(x = head; x.next != null; x = x.next);
-            x.next = new Node(key, value, null);
+            x.next = new Node(key, value, null, x);
         } else {
-            head = new Node(key, value, null);
+            head = new Node(key, value, null, null);
         }
     }
     
@@ -90,13 +104,13 @@ public class LinkedList_Duplicates<K,V> {
             return;
         } else if(head.key == key) {
             head = head.next;
+            head.prev = null;
             return;
         }
         
-        Node x;
-        for(x = head; x.next != null && x.next.key != key; x = x.next);
-
-        x.next = x.next.next;
+        Node x = find(key);
+        x.prev.next = x.next;
+        x.next.prev = x.prev;
     }
 
 

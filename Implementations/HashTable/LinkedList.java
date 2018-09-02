@@ -1,10 +1,12 @@
 /**
- * A singly linked list which does not allow duplicates
+ * A singly linked list which allows duplicates
  *
  * @author Michael Thomson
  */
 
-public class LinkedList_No_Duplicates<K,V> {
+import java.util.Iterator;
+
+public class LinkedList<K,V> {
     Node head;
 
     /**
@@ -32,7 +34,7 @@ public class LinkedList_No_Duplicates<K,V> {
     /**
      * constructor for a linked list
      */
-    public LinkedList_No_Duplicates() {
+    public LinkedList() {
         head = null;
     }
 
@@ -44,8 +46,19 @@ public class LinkedList_No_Duplicates<K,V> {
      */
     public Node find(K key) {
         Node x;
-        for(x = head; x != null && x.key != key; x = x.next);
+        for(x = head; x.key != key && x != null; x = x.next);
         return x;
+    }
+
+    /**
+     * returns the value associated to the given key
+     *
+     * @param key key to look up
+     * @return value associated to the key
+     */
+    public V get(K key) {
+        Node x = find(key);
+        return x.value;
     }
 
     /**
@@ -55,10 +68,6 @@ public class LinkedList_No_Duplicates<K,V> {
      * @param value value to be inserted with the key
      */
     public void appendToStart(K key, V value) {
-        if(find(key) != null) {
-            return;
-        }
-
         if(head != null) {
             Node newNode = new Node(key, value, head);
             this.head = newNode;
@@ -75,10 +84,6 @@ public class LinkedList_No_Duplicates<K,V> {
      * @param value value to be inserted with the key
      */
     public void appendToEnd(K key, V value) {
-        if(find(key) != null) {
-            return;
-        }
-
         Node x;
         if(head != null) {
             for(x = head; x.next != null; x = x.next);
@@ -128,21 +133,4 @@ public class LinkedList_No_Duplicates<K,V> {
 
         return stringBuilder.toString();
     }
-
-    /**
-     * helper function to show functionality
-     */
-    public static void main(String[] args) {
-        LinkedList_No_Duplicates<Integer, String> linkedList = new LinkedList_No_Duplicates<Integer, String>();
-
-        linkedList.appendToEnd(1, "duplicate");
-        linkedList.appendToStart(2, "foo");
-        linkedList.appendToEnd(5, "lorem");
-        linkedList.appendToStart(1, "duplicate");
-
-        linkedList.delete(2);
-
-        System.out.println(linkedList.toString());
-    }
-
 }

@@ -16,6 +16,10 @@ public class HashTable<K,V> {
         return key.hashCode() % size;
     }
 
+    public boolean contains(K key) {
+        return table.get(hash(key)).find(key) != null;
+    }
+
     public void insert(K key, V value) {
         int index = hash(key);
 
