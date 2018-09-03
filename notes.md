@@ -55,3 +55,107 @@ String joinWords(String[] words) {
     return StringBuilder.toString();
 }
 ```
+# Stacks and Queues
+
+## Implementing a Stack
+
+* The stack data structure is precisely what it sounds like: a stack of data
+* A stack uses LIFO (Last in first out) ordering. It uses the following operations:
+    * pop(): Remove the top item of the stack
+    * push(item): add an item on top of the stack
+    * peek(): return the top of the stack
+    * isEmpty(): return true if the stack is empty
+* A sample implementation:
+
+```java
+public class MyStack<T> {
+    private static class StackNode<T> {
+        private T data;
+        private StackNode<T> next;
+
+        public StackNode(T data) {
+            this.data = data;
+        }
+    }
+
+    private StackNode<T> top;
+
+    public T pop() {
+        if(top == null) throw new EmptyStackException();
+        T item = top.data;
+        top = top.next
+        return item;
+    }
+
+    public void push(T item) {
+        StackNode<T> t = new StackNode<T>(item);
+        t.next = top;
+        top = t;
+    }
+
+    public T peek() {
+        if(top == null) throw new EmptyStackException();
+        return top.data;
+    }
+
+    public boolean isEmpty() {
+        return top == null;
+    }
+}
+```
+
+## Implementing a Queue
+
+* A queue implements FIFO (first-in first-out) ordering. As in a line or queue at a ticket stand
+* It uses the following operations:
+    * add(item): add item to the end of the list
+    * remove() remove the first item in the list
+    * peek(): return the top of the queue
+    * isEmpty(): returns true if the queue is empty
+* A queue can be implemented as a linked list:
+
+```java
+public class MyQueue<T> {
+    private static class QueueNode<T> {
+        private T data;
+        private QueueNode<T> next;
+
+        public QueueNode(T data) {
+            this.data = data;
+        }
+    }
+
+    private QueueNode<T> first;
+    private QueueNode<T> last;
+
+    public void add(T item) {
+        QueueNode<T> t = new QueueNode<T>(item);
+        if(last != null) {
+            last.next = t;
+        }
+        last = t;
+        if (first == null) {
+            first = last;
+        }
+    }
+
+    public T remove() {
+        if (first == null) throw new NoSuchElementException();
+        T data = first.data;
+        first = first.next;
+        if(first == null) {
+            last = null;
+        }
+        return data;
+    }
+
+    public T peek() {
+        if (first == null) throw new NoSuchElementException();
+        return first.data;
+    }
+
+    public boolean isEmpty() {
+        return first == null;
+    }
+}
+```
