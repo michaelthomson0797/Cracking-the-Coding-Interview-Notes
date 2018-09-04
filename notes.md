@@ -295,3 +295,52 @@ class Node {
 ### Adjacency Matrix
 * An adjacency matrix is an NxN matrix where a true value at matrix\[i\]\[j\] indicated an edge from node i to j
 * This is generally less efficient for searching because with a list it is easy to iterate throught the neighbors, whereas a matrix must iterate through all nodes to see if they are a neighbor
+
+## Graph Search
+* The most common ways to search a graph are depth-first and breadth-first search
+* In Depth-first search (DFS), we start at the root and explore  each branch completely before moving on to the next branch
+* in Breadth-first search (BFS), we start at the root and explore each neighbor before going onto any of their children
+* BFS and DFS tend to be used in different scenarios. DFS is often preffered if we want to visit every node in the graph. Both work just fine. but DFS is a bit simpler
+* However, if we want to find the shortest path between two nodes, BFS is generally better
+
+### Depth-First Search
+* In DFS, we visit a node and then iterate through each of a's neighbors.
+* When visiting a node b that is a neigbor of a, we visit all of b's neighbors before going on to a's other neighbors
+* This is similar to tree traversal but we must check if a node has been visited
+* A pseudocode exampe:
+
+```java
+void search(Node root) {
+    if (root == null) return;
+    visit(root);
+    root.visited = true;
+    for(Node n : root.adjacent) {
+        if(n.visited == false) {
+            search(n);
+        }
+    }
+}
+```
+
+### Breadth-first Search
+* BFS is a bit less intuitive. instead of being recursive, it uses a queue
+* in BFS, node a visits each of a's neighbors  before visiting any of their neighbors.
+
+```java
+void search(Node root) {
+    Queue queue = new Queue();
+    root.marked = true;
+    queue.enqueue(root); //Add to the end of Queue
+
+    while(!queue.isEmpty()) {
+        Node r = queue.dequeue();
+        visit(r);
+        for(Node n : r.adjacent) {
+            if(n.marked == false) {
+                n.marked = true;
+                queue.enqueue(n);
+            }
+        }
+    }
+}
+```
